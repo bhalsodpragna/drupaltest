@@ -93,9 +93,15 @@ class NodeGroup extends NodeViewBuilderAbstract {
           'og_membership_type' => OgMembershipInterface::TYPE_DEFAULT,
         ];
 
-      $url = Url::fromRoute('og.subscribe', $parameters);
+      $url = Url::fromRoute('og.subscribe', $parameters)->toString();
+      $link = \Drupal\Core\Link::fromTextAndUrl('here', \Drupal\Core\Url::fromUri('internal:'.$url))->toString();
 
-      $link['title'] = $this->t("Hi @user, click here if you would like to subscribe to this group called @groupname", ['@user'=> $name, '@groupname' => $entity->label()]);
+      $elements[] = [
+        '#type' => 'markup',
+        '#markup' => t('Hi @user, click @link if you would like to subscribe to this group called @groupname', array('@user'=> $name, '@groupname' => $entity->label(), '@link' => $link)),
+      ];
+
+     /* $link['title'] = $this->t("Hi @user, click here if you would like to subscribe to this group called @groupname", ['@user'=> $name, '@groupname' => $entity->label()]);
       $link['class'] = ['subscribe', 'request'];
       $link['url'] = $url;
 
@@ -103,7 +109,7 @@ class NodeGroup extends NodeViewBuilderAbstract {
         '#type' => 'link',
         '#title' => $link['title'],
         '#url' => $link['url'],
-      ];
+      ];*/
 
     }
 
