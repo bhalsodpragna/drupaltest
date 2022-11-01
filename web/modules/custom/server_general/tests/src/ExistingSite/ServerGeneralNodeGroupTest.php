@@ -58,6 +58,7 @@ class ServerGeneralNodeGroupTest extends ExistingSiteBase {
     // We can browse pages.
     $this->drupalGet($this->group->toUrl());
     $this->assertSession()->statusCodeEquals(200);
+    
     $this->clickLink('here');
     $this->assertSession()->addressEquals('group/'. $this->group->toUrl() .'/subscribe');
     
