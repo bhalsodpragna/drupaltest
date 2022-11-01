@@ -1,0 +1,15 @@
+uuid: 70b62631-f06c-408f-8092-252866b82c0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.group
+id: node-group-member
+label: Member
+weight: 1
+group_id: null
+group_type: node
+group_bundle: group
+is_admin: null
+permissions: {  }
+role_type: required
