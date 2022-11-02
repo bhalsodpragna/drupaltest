@@ -14,6 +14,9 @@ use Drupal\server_general\TitleAndLabelsTrait;
 use Drupal\Core\Link;
 use \Drupal\Core\Url;
 use Drupal\og\OgMembershipInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\og\OgAccessInterface;
+use Drupal\Core\Access\AccessResult;
 
 
 /**
@@ -82,34 +85,23 @@ class NodeGroup extends NodeViewBuilderAbstract {
 
     $current_user = \Drupal::currentUser();
     //$logged_in = \Drupal::currentUser()->isAuthenticated();
-
-    if ($current_user->isAuthenticated()) {
-      $account = \Drupal\user\Entity\User::load($current_user->id());; // pass your uid
-      $name = $account->get('name')->value;
-
-      $parameters = [
+    $parameters = [
           'entity_type_id' => $entity->getEntityTypeId(),
           'group' => $entity->id(),
           'og_membership_type' => OgMembershipInterface::TYPE_DEFAULT,
         ];
 
-      $url = Url::fromRoute('og.subscribe', $parameters)->toString();
+    $url = Url::fromRoute('og.subscribe', $parameters)->toString();
+    if ($current_user->isAuthenticated() && AccessResult::allowedIf($current_user->hasPermission(Url::fromRoute($url)))) {
+      $account = \Drupal\user\Entity\User::load($current_user->id());; // pass your uid
+      $name = $account->get('name')->value;
+
       $link = \Drupal\Core\Link::fromTextAndUrl('here', \Drupal\Core\Url::fromUri('internal:'.$url))->toString();
 
       $elements[] = [
         '#type' => 'markup',
         '#markup' => t('Hi @user, click @link if you would like to subscribe to this group called @groupname', array('@user'=> $name, '@groupname' => $entity->label(), '@link' => $link)),
       ];
-
-     /* $link['title'] = $this->t("Hi @user, click here if you would like to subscribe to this group called @groupname", ['@user'=> $name, '@groupname' => $entity->label()]);
-      $link['class'] = ['subscribe', 'request'];
-      $link['url'] = $url;
-
-      $elements[] = [
-        '#type' => 'link',
-        '#title' => $link['title'],
-        '#url' => $link['url'],
-      ];*/
 
     }
 

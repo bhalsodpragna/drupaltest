@@ -52,30 +52,13 @@ class ServerGeneralNodeGroupTest extends ExistingSiteBase {
     $this->group->save();
 
     $this->drupalSetCurrentUser($this->user);
-    $elements = $this->getElements();
-    $this->assertEquals('You are the group manager', $elements[0]['#value']);
-
-    // We can browse pages.
+   
     $this->drupalGet($this->group->toUrl());
     $this->assertSession()->statusCodeEquals(200);
     
+    $this->assertSession()->pageTextContains(t('if you would like to subscribe to this group called'));
     $this->clickLink('here');
     $this->assertSession()->addressEquals('group/'. $this->group->toUrl() .'/subscribe');
     
-    $user1 = $this->createUser();
-    $this->drupalSetCurrentUser($user1);
-
-    $elements = $this->getElements();
-    $this->assertEquals('Request group membership', $elements[0]['#title']);
-  }
-
-  /**
-   * Helper method; Return the renderable elements from the formatter.
-   *
-   * @return array
-   *   The renderable array.
-   */
-  protected function getElements() {
-    return $this->group->get('og_group')->view();
   }
 }
