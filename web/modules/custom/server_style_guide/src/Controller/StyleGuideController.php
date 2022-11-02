@@ -87,6 +87,13 @@ class StyleGuideController extends ControllerBase {
     $element = $this->getCards();
     $build[] = $this->wrapElementWideContainer($element, 'Cards');
 
+    $element = $this->getPersonCard();
+    $build[] = $this->wrapElementWideContainer($element, 'Person card');
+
+    $element = $this->getPersonCards();
+    $build[] = $this->wrapElementWideContainer($element, 'Person cards');
+
+
     $element = $this->getTags();
     $build[] = $this->wrapElementWideContainer($element, 'Tags');
 
@@ -183,6 +190,74 @@ class StyleGuideController extends ControllerBase {
     ];
   }
 
+   /**
+   * Get card.
+   *
+   * @return array
+   *   Render array.
+   */
+  protected function getPersonCard(): array {
+    $image = $this->buildRoundedImage($this->getPlaceholderPersonImage(128, 128), '');
+
+    $card = [
+      '#theme' => 'server_theme_person_card',
+      '#image' => $image,
+      '#title' => 'Jane Cooper',
+      '#designation' => 'Paradigm Representative',
+      '#role' => 'Admin',
+      '#emailId' => 'pragna@gmail.com',
+      '#phone' => '1234567',
+    ];
+
+   
+    $items = [
+      $card,
+    ];
+
+    return [
+      '#theme' => 'server_theme_person_cards',
+      '#items' => $items,
+    ];
+  }
+
+   /**
+   * Get cards.
+   *
+   * @return array
+   *   Render array.
+   */
+  protected function getPersonCards(): array {
+    $image = $this->buildRoundedImage($this->getPlaceholderPersonImage(128, 128), '');
+
+    $card = [
+      '#theme' => 'server_theme_person_card',
+      '#image' => $image,
+      '#title' => 'Jane Cooper',
+      '#designation' => 'Paradigm Representative',
+      '#role' => 'Admin',
+      '#emailId' => 'pragna@gmail.com',
+      '#phone' => '1234567',
+    ];
+
+   
+    $items = [
+      $card,
+      $card,
+      $card,
+      $card,
+      $card,
+      $card,
+      $card,
+      $card,
+      $card,
+      $card,
+    ];
+
+    return [
+      '#theme' => 'server_theme_person_cards',
+      '#items' => $items,
+    ];
+  }
   /**
    * Define a set of buttons.
    *
@@ -289,6 +364,26 @@ class StyleGuideController extends ControllerBase {
       '#theme' => 'image',
       '#uri' => $url,
       '#alt' => $alt,
+    ];
+  }
+
+ /**
+   * Build an image render array with given image URL.
+   *
+   * @param string $url
+   *   The url of the image, internal or external.
+   * @param string $alt
+   *   Alt text.
+   *
+   * @return array
+   *   An image render array.
+   */
+  protected function buildRoundedImage(string $url, string $alt) {
+    return [
+      '#theme' => 'image',
+      '#uri' => $url,
+      '#alt' => $alt,
+      '#attributes' => array("class" => "rounded-full"),
     ];
   }
 
